@@ -13,6 +13,21 @@
     --shadow-light: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
     --shadow-medium: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
     --shadow-heavy: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+
+    /* Motion tokens */
+    --duration-fast: 150ms;      /* taps, micro */
+    --duration-medium: 240ms;    /* small panels */
+    --duration-slow: 520ms;      /* page/section */
+    --stagger-step: 70ms;        /* child offset */
+
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-in: cubic-bezier(0.7, 0, 0.84, 0);
+    --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+
+    /* Elevation tiers */
+    --elev-1: 0 6px 20px rgba(0,0,0,0.18);
+    --elev-2: 0 12px 30px rgba(0,0,0,0.22);
+    --elev-3: 0 20px 50px rgba(0,0,0,0.28);
 }
 
 * {
@@ -38,7 +53,9 @@ html {
     font-size: 2.5rem;
     font-weight: 700;
     margin-bottom: 1rem;
-    color: var(--text-white);
+    color: #ffffff !important;
+    opacity: 1 !important;
+    visibility: visible !important;
     position: relative;
 }
 
@@ -56,18 +73,20 @@ html {
 
 .section-subtitle {
     font-size: 1.1rem;
-    color: var(--text-light);
+    color: #f8fafc !important;
     max-width: 600px;
     margin: 0 auto;
-    opacity: 0.9;
+    opacity: 1 !important;
+    visibility: visible !important;
 }
 
 /* Navigation */
 .navbar {
-    background: rgba(15, 23, 42, 0.95);
+    background: rgba(15, 23, 42, 0.95) !important;
+    -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
-    transition: all 0.3s ease;
     padding: 1rem 0;
+    box-shadow: none !important;
 }
 
 .navbar-brand {
@@ -75,11 +94,20 @@ html {
     color: var(--accent-orange) !important;
 }
 
+/* Constrain navbar logo size */
+.navbar-brand img {
+    height: 40px;
+    width: auto;
+    margin-right: 0.5rem;
+    object-fit: contain;
+    vertical-align: middle;
+}
+
 .navbar-nav .nav-link {
     color: var(--text-light) !important;
     font-weight: 500;
     margin: 0 0.5rem;
-    transition: all 0.3s ease;
+    transition: color var(--duration-fast) var(--ease-standard);
     position: relative;
 }
 
@@ -95,7 +123,7 @@ html {
     width: 0;
     height: 2px;
     background: var(--accent-orange);
-    transition: width 0.3s ease;
+    transition: width var(--duration-fast) var(--ease-out);
 }
 
 .navbar-nav .nav-link:hover::after {
@@ -342,22 +370,27 @@ html {
 .hero-title {
     font-size: 3.5rem;
     font-weight: 800;
-    color: var(--text-white);
+    color: #ffffff !important;
     margin-bottom: 1.5rem;
     line-height: 1.2;
-    animation: fadeInUp 1s ease-out;
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: block !important;
 }
 
 .hero-subtitle {
     font-size: 1.3rem;
-    color: var(--text-light);
+    color: #f8fafc !important;
     margin-bottom: 2rem;
-    opacity: 0.9;
-    animation: fadeInUp 1s ease-out 0.3s both;
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: block !important;
 }
 
 .hero-buttons {
-    animation: fadeInUp 1s ease-out 0.6s both;
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: block !important;
 }
 
 .btn {
@@ -366,10 +399,14 @@ html {
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    transition: all 0.3s ease;
+    transition: transform var(--duration-fast) var(--ease-standard),
+                background-color var(--duration-fast) var(--ease-standard),
+                color var(--duration-fast) var(--ease-standard),
+                box-shadow var(--duration-fast) var(--ease-standard);
     border: none;
     position: relative;
     overflow: hidden;
+    will-change: transform, opacity;
 }
 
 .btn-primary {
@@ -380,8 +417,14 @@ html {
 
 .btn-primary:hover {
     background: #e55a2b;
-    transform: translateY(-2px);
+    transform: translateY(-2px) scale(0.99);
     box-shadow: var(--shadow-heavy);
+}
+
+/* Press/micro-interaction */
+.btn.pressed,
+.btn:active {
+    transform: translateY(-1px) scale(0.98);
 }
 
 .btn-outline-light {
@@ -404,14 +447,16 @@ html {
 /* Problem Section */
 .problem-card {
     background: rgba(255, 255, 255, 0.05);
+    -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 20px;
     padding: 2rem;
     height: 100%;
-    transition: all 0.3s ease;
+    transition: transform var(--duration-medium) var(--ease-standard), box-shadow var(--duration-medium) var(--ease-standard), border-color var(--duration-medium) var(--ease-standard);
     position: relative;
     overflow: hidden;
+    will-change: transform, opacity;
 }
 
 .problem-card::before {
@@ -539,11 +584,13 @@ html {
 /* Market Section */
 .market-card {
     background: rgba(255, 255, 255, 0.05);
+    -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 20px;
     padding: 2rem;
-    transition: all 0.3s ease;
+    transition: transform var(--duration-medium) var(--ease-standard), box-shadow var(--duration-medium) var(--ease-standard), border-color var(--duration-medium) var(--ease-standard);
+    will-change: transform, opacity;
 }
 
 .market-card:hover {
@@ -574,12 +621,14 @@ html {
 /* Customer Personas */
 .persona-card {
     background: rgba(255, 255, 255, 0.05);
+    -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 20px;
     padding: 2rem;
     height: 100%;
-    transition: all 0.3s ease;
+    transition: transform var(--duration-medium) var(--ease-standard), box-shadow var(--duration-medium) var(--ease-standard), border-color var(--duration-medium) var(--ease-standard);
+    will-change: transform, opacity;
 }
 
 .persona-card:hover {
@@ -608,6 +657,7 @@ html {
 /* Competitive Table */
 .competitive-table {
     background: rgba(255, 255, 255, 0.05);
+    -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
     border-radius: 20px;
     overflow: hidden;
@@ -623,7 +673,7 @@ html {
 }
 
 .competitive-table td {
-    color: var(--text-light);
+    color: var(--text-white) !important;
     border: none;
     padding: 1.5rem 1rem;
     vertical-align: middle;
@@ -634,7 +684,7 @@ html {
 }
 
 .competitive-table tbody tr:hover {
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0.08);
 }
 
 .competitive-table i.fa-check {
@@ -643,6 +693,13 @@ html {
 
 .competitive-table i.fa-times {
     font-size: 1.2rem;
+}
+
+/* Improve visibility of first column labels inside the competitive table */
+.competitive-table tbody td:first-child {
+    color: var(--text-white) !important;
+    font-weight: 600;
+    opacity: 1;
 }
 
 /* Vision Section */
@@ -715,12 +772,14 @@ html {
 /* Team Section */
 .team-card {
     background: rgba(255, 255, 255, 0.05);
+    -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 20px;
     padding: 2rem;
     height: 100%;
-    transition: all 0.3s ease;
+    transition: transform var(--duration-medium) var(--ease-standard), box-shadow var(--duration-medium) var(--ease-standard), border-color var(--duration-medium) var(--ease-standard);
+    will-change: transform, opacity;
 }
 
 .team-card:hover {
@@ -759,7 +818,7 @@ html {
 
 .cta-buttons .btn-light:hover {
     background: var(--text-light);
-    transform: translateY(-2px);
+    transform: translateY(-2px) scale(0.99);
     box-shadow: var(--shadow-heavy);
 }
 
@@ -775,7 +834,7 @@ html {
 
 .social-links a {
     font-size: 1.5rem;
-    transition: all 0.3s ease;
+    transition: transform var(--duration-fast) var(--ease-out), color var(--duration-fast) var(--ease-out);
 }
 
 .social-links a:hover {
@@ -817,38 +876,52 @@ html {
     }
 }
 
-/* Scroll Animations */
+/* Scroll Animations - DISABLED */
 .fade-in {
-    opacity: 0;
-    transform: translateY(30px);
-    transition: all 0.8s ease;
+    opacity: 1 !important;
+    transform: translateY(0) !important;
 }
 
 .fade-in.visible {
-    opacity: 1;
-    transform: translateY(0);
+    opacity: 1 !important;
+    transform: translateY(0) !important;
 }
 
 .slide-in-left {
-    opacity: 0;
-    transform: translateX(-50px);
-    transition: all 0.8s ease;
+    opacity: 1 !important;
+    transform: translateX(0) !important;
 }
 
 .slide-in-left.visible {
-    opacity: 1;
-    transform: translateX(0);
+    opacity: 1 !important;
+    transform: translateX(0) !important;
 }
 
 .slide-in-right {
-    opacity: 0;
-    transform: translateX(50px);
-    transition: all 0.8s ease;
+    opacity: 1 !important;
+    transform: translateX(0) !important;
 }
 
 .slide-in-right.visible {
-    opacity: 1;
-    transform: translateX(0);
+    opacity: 1 !important;
+    transform: translateX(0) !important;
+}
+
+/* Disable all animations globally */
+* {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+}
+
+/* Reduced motion accessibility */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 1ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 1ms !important;
+        scroll-behavior: auto !important;
+    }
 }
 
 /* Responsive Design */
